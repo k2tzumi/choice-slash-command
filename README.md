@@ -11,11 +11,6 @@ You can make this bot work by registering it as a request URL for the [Slack API
 Slack slash command
 --------------------
 
-See help.  
-* Help command execution method
-```
-/choice help
-```
 * When you let them choose a word  
 ```
 /choice keyword1 keyword2 keyword3
@@ -73,5 +68,5 @@ Setting Property & Value
 Setting Request URL.  
 For example) https://script.google.com/macros/s/miserarenaiyo/exec  
 
-* Slack APP install
+* Slack APP install  
 Settings > Install App  
