@@ -1,0 +1,18 @@
+{
+  "timeZone": "Asia/Tokyo",
+  "dependencies": {
+    "libraries": [
+    ]
+  },
+  "webapp": {
+    "access": "ANYONE_ANONYMOUS",
+    "executeAs": "USER_DEPLOYING"
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "urlFetchWhitelist": [
+    "https://slack.com/",
+    "https://api.slack.com/",
+    "https://hooks.slack.com/"
+  ],
+  "runtimeVersion": "V8"
+}
