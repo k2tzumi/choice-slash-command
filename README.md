@@ -14,11 +14,11 @@ Slack slash command
 See help.  
 * Help command execution method
 ```
-/mob help
+/choice help
 ```
-* When you start mob programming  
+* When you let them choose a word  
 ```
-/mob
+/choice keyword1 keyword2 keyword3
 ```
 
 
@@ -70,7 +70,7 @@ Setting Property & Value
 ### Settings Slash Commands & Slack APP install
 
 * Create New Command  
-Setting Request URL.
+Setting Request URL.  
 For example) https://script.google.com/macros/s/miserarenaiyo/exec  
 
 * Slack APP install
