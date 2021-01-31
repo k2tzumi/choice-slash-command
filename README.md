@@ -14,11 +14,11 @@ Slack slash command
 See help.  
 * Help command execution method
 ```
-/mob help
+/choice help
 ```
 * When you start mob programming  
 ```
-/mob
+/choice
 ```
 
 
