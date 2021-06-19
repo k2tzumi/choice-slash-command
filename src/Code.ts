@@ -2,14 +2,14 @@ import { Slack } from "./slack/types/index.d";
 import { SlackHandler } from "./SlackHandler";
 import { SlashCommandFunctionResponse } from "./SlashCommandHandler";
 import { DuplicateEventError } from "./CallbackEventHandler";
-import { JobBroker } from "apps-script-jobqueue";
+import * as JobBroker from "apps-script-jobqueue";
 
 type TextOutput = GoogleAppsScript.Content.TextOutput;
 type DoPost = GoogleAppsScript.Events.DoPost;
 type Commands = Slack.SlashCommand.Commands;
 
 const asyncLogging = (): void => {
-  JobBroker.enqueueAsyncJob((parameter: Record<string, any>) => {
+  JobBroker.consumeAsyncJob((parameter: Record<string, any>) => {
     console.info(JSON.stringify(parameter));
   });
 };
@@ -27,8 +27,6 @@ function doPost(e: DoPost): TextOutput {
     const process = slackHandler.handle(e);
 
     if (process.performed) {
-      JobBroker.
-      
       JobBroker.enqueueAsyncJob(asyncLogging, {
         message: "peformed!"
       });
