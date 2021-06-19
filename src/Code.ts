@@ -2,14 +2,14 @@ import { Slack } from "./slack/types/index.d";
 import { SlackHandler } from "./SlackHandler";
 import { SlashCommandFunctionResponse } from "./SlashCommandHandler";
 import { DuplicateEventError } from "./CallbackEventHandler";
-import { JobBroker } from "./JobBroker";
+import { JobBroker } from "apps-script-jobqueue";
 
 type TextOutput = GoogleAppsScript.Content.TextOutput;
+type DoPost = GoogleAppsScript.Events.DoPost;
 type Commands = Slack.SlashCommand.Commands;
 
 const asyncLogging = (): void => {
-  const jobBroker: JobBroker = new JobBroker();
-  jobBroker.consumeJob((parameter: {}) => {
+  JobBroker.enqueueAsyncJob((parameter: Record<string, any>) => {
     console.info(JSON.stringify(parameter));
   });
 };
@@ -18,7 +18,7 @@ const properties = PropertiesService.getScriptProperties();
 const VERIFICATION_TOKEN: string = properties.getProperty("VERIFICATION_TOKEN");
 const COMMAND = "/choice";
 
-function doPost(e): TextOutput {
+function doPost(e: DoPost): TextOutput {
   const slackHandler = new SlackHandler(VERIFICATION_TOKEN);
 
   slackHandler.addCommandListener(COMMAND, executeSlashCommand);
@@ -27,13 +27,18 @@ function doPost(e): TextOutput {
     const process = slackHandler.handle(e);
 
     if (process.performed) {
+      JobBroker.
+      
+      JobBroker.enqueueAsyncJob(asyncLogging, {
+        message: "peformed!"
+      });
       return process.output;
     }
   } catch (exception) {
     if (exception instanceof DuplicateEventError) {
       return ContentService.createTextOutput();
     } else {
-      new JobBroker().enqueue(asyncLogging, {
+      JobBroker.enqueueAsyncJob(asyncLogging, {
         message: exception.message,
         stack: exception.stack
       });

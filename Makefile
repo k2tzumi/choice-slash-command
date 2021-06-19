@@ -9,7 +9,8 @@ help:
 	clasp create --title choice-slash-command --type webapp --rootDir ./src
 	clasp setting fileExtension ts
 	# clasp setting filePushOrder
-	sed -i -e 's/}/,"filePushOrder":["src\/SlackBaseHandler.ts","src\/BaseError.ts","src\/JobBroker.ts"]}/' .clasp.json
+	sed -i -e 's/}/,"filePushOrder":["src\/SlackBaseHandler.ts","src\/BaseError.ts"]}/' .clasp.json
+	rm -f .clasp.json-e
 
 node_modules:
 	npm ci
