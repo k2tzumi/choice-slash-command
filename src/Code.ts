@@ -11,7 +11,7 @@ type Commands = Slack.SlashCommand.Commands;
 const asyncLogging = (): void => {
   JobBroker.consumeAsyncJob((parameter: Record<string, any>) => {
     console.info(JSON.stringify(parameter));
-  });
+  }, "asyncLogging");
 };
 
 const properties = PropertiesService.getScriptProperties();
@@ -27,9 +27,6 @@ function doPost(e: DoPost): TextOutput {
     const process = slackHandler.handle(e);
 
     if (process.performed) {
-      JobBroker.enqueueAsyncJob(asyncLogging, {
-        message: "peformed!"
-      });
       return process.output;
     }
   } catch (exception) {
