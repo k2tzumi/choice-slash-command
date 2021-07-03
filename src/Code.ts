@@ -158,13 +158,13 @@ function createChoiceResponse(
     case "ja-JP":
       return {
         response_type: "in_channel",
-        text: `\`${word}\` を選んでみました。`
+        text: `選ばれたのは \`${word}\` でした。`
       };
     case "en-US":
     default:
       return {
         response_type: "in_channel",
-        text: `I picked out the \`${word}\` for you.`
+        text: `It was \`${word}\` that was chosen.`
       };
   }
 }
