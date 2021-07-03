@@ -33,7 +33,7 @@ deploy: .clasp.json
 .PHONY: redeploy
 redeploy: ## Re-Deploy Google apps scripts
 redeploy: .clasp.json
-	clasp deploy -i `clasp deployments | grep "web app meta-version" | cut -f2 -d" "`
+	clasp deploy -i `clasp deployments | grep "web app meta-version" | cut -f2 -d" "` -d "web app meta-version"
 
 .PHONY: open
 open: ## Open Google apps scripts
