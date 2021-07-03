@@ -29,6 +29,7 @@
     "tslint-plugin-prettier": "^2.3.0"
   },
   "dependencies": {
-    "@types/google-apps-script": "^1.0.22"
+    "@types/google-apps-script": "^1.0.22",
+    "apps-script-jobqueue": "github:k2tzumi/apps-script-jobqueue"
   }
 }
