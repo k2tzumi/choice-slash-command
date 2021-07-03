@@ -10,6 +10,7 @@ module.exports = {
         CacheService: {},
         ContentService: {},
         ScriptApp: {},
+        JobBroker: {},
     },
     moduleDirectories: [
         'node_modules',
@@ -26,4 +27,5 @@ module.exports = {
     transform: {
         '^.+\\.tsx?$': 'ts-jest',
     },
+    transformIgnorePatterns: ["/node_modules/"]
 };
