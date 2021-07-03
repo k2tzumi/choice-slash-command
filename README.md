@@ -20,9 +20,13 @@ Slack slash command
 REQUIREMENTS
 --------------------
 - `npm`
-- [clasp](https://github.com/google/clasp)  
+- [clasp](https://github.com/google/clasp)
 `npm install -g @google/clasp`
+- [apps-script-jobqueue](https://github.com/k2tzumi/apps-script-jobqueue)
 - `make`
+- GAS Library
+  - [OAuth2](https://github.com/googleworkspace/apps-script-oauth2)
+  - [JobBroker](https://github.com/k2tzumi/apps-script-jobqueue)
 
 USAGE
 --------------------
@@ -55,6 +59,8 @@ In order to run the application and change its behavior, you need to set the fol
 |Property name|Required|Setting Value|Description|
 |--|--|--|--|
 |VERIFICATION_TOKEN|○|Basic Information > App Credentials > Verification Token|A token that easily authenticates the source of a hooked request|
+|CLIENT_ID|○|Basic Information > App Credentials > Client ID|Use with OAuth|
+|CLIENT_SECRET|○|Basic Information > App Credentials > Client Secret|Use with OAuth|
 
 1. Open Project  
 `$ make open`
@@ -62,11 +68,44 @@ In order to run the application and change its behavior, you need to set the fol
 File > Project properties > Scirpt properties > Add row  
 Setting Property & Value
 
-### Settings Slash Commands & Slack APP install
+### OAuth Authentication
+
+#### Settings OAuth & Permissions
+
+* Redirect URLs  
+`Add New Redirect URL` > Add Redirect URL  > `Save URLs`  
+ex) https://script.google.com/macros/s/miserarenaiyo/usercallback  
+You can check the Redirect URL in the following way. The `RedirectUri` of the displayed page.  
+`$ make application`  
+* Bot Token Scopes  
+Click `Add an OAuth Scope` to select the following permissions  
+  * [commands](https://api.slack.com/scopes/commands)
+  * [users:read](https://api.slack.com/scopes/users:read)
+
+* Install App to Workspace  
+You must specify a destination channel that bot can post to as an app.
+
+### Install App to Workspace
+
+1. Open web application  
+`$ make application`  
+The browser will be launched with the following URL:  
+example) https://script.google.com/macros/s/miserarenaiyo/exec  
+2. Click `Authorize.`  
+You must specify a destination channel that bot can post to as an app.
+3. Click `Allow`  
+The following message is displayed when OAuth authentication is successful  
+```
+Success!
+Setting EventSubscriptions
+Setting Slash Commands
+Setting Interactivity & Shortcuts
+```
+When prompted, click the `Setting Slash Commands` to set up an Slash Commands.  
+
+
+### Settings Slash Commands
 
 * Create New Command  
 Setting Request URL.  
 For example) https://script.google.com/macros/s/miserarenaiyo/exec  
-
-* Slack APP install  
-Settings > Install App  
