@@ -4,7 +4,7 @@ import { SlashCommandFunctionResponse } from "./SlashCommandHandler";
 import { DuplicateEventError } from "./CallbackEventHandler";
 import { OAuth2Handler } from "./OAuth2Handler";
 import { SlackApiClient } from "./SlackApiClient";
-import * as JobBroker from "apps-script-jobqueue";
+import { JobBroker } from "apps-script-jobqueue";
 
 type TextOutput = GoogleAppsScript.Content.TextOutput;
 type HtmlOutput = GoogleAppsScript.HTML.HtmlOutput;
@@ -23,7 +23,6 @@ const VERIFICATION_TOKEN: string = properties.getProperty("VERIFICATION_TOKEN");
 const CLIENT_ID: string = properties.getProperty("CLIENT_ID");
 const CLIENT_SECRET: string = properties.getProperty("CLIENT_SECRET");
 let handler: OAuth2Handler;
-const COMMAND = "/choice";
 
 const handleCallback = (request): HtmlOutput => {
   initializeOAuth2Handler();
@@ -72,7 +71,10 @@ function doPost(e: DoPost): TextOutput {
 
   const slackHandler = new SlackHandler(VERIFICATION_TOKEN);
 
-  slackHandler.addCommandListener(COMMAND, executeSlashCommand);
+  slackHandler.addCommandListener(
+    e.parameter.command ?? "command",
+    executeSlashCommand
+  );
 
   try {
     const process = slackHandler.handle(e);
@@ -98,10 +100,10 @@ function doPost(e: DoPost): TextOutput {
 const executeSlashCommand = (
   commands: Commands
 ): SlashCommandFunctionResponse | null => {
-  const locale = getLocale(commands.channel_id);
+  const locale = getLocale(commands.user_id);
   const choiceWords = commands.text.split(" ");
   if (choiceWords.length === 1) {
-    return createUsageResponse(locale);
+    return createUsageResponse(commands.command, locale);
   }
 
   if (
@@ -114,29 +116,36 @@ const executeSlashCommand = (
   }
 };
 
-function getLocale(channel_id: string): string {
-  const client = new SlackApiClient(handler.token);
-  const conversations = client.conversationsInfo(channel_id);
+function getLocale(user_id: string): string {
+  JobBroker.enqueueAsyncJob(asyncLogging, {
+    token: handler.token
+  });
 
-  return conversations.locale;
+  const client = new SlackApiClient(handler.token);
+  const user = client.usersInfo(user_id);
+
+  return user.locale;
 }
 
 function randomChoice(words: string[]): string {
   return words[Math.floor(Math.random() * words.length)];
 }
 
-function createUsageResponse(locale: string): SlashCommandFunctionResponse {
+function createUsageResponse(
+  command: string,
+  locale: string
+): SlashCommandFunctionResponse {
   switch (locale) {
     case "ja-JP":
       return {
         response_type: "ephemeral",
-        text: `*使い方*\n* ${COMMAND} 梅 竹 松\n* ${COMMAND} help`
+        text: `*使い方*\n* ${command} 松 竹 梅\n* ${command} help`
       };
     case "en-US":
     default:
       return {
         response_type: "ephemeral",
-        text: `*Usage*\n* ${COMMAND} keyword1 keyword2 keyword3\n* ${COMMAND} help`
+        text: `*Usage*\n* ${command} keyword1 keyword2 keyword3\n* ${command} help`
       };
   }
 }
@@ -165,7 +174,7 @@ function createSabotageResponse(locale: string): SlashCommandFunctionResponse {
     case "ja-JP":
       return {
         response_type: "in_channel",
-        text: "そんな気分にはなれません。¥n皆さんで話し合って決めてください。"
+        text: "そんな気分ではありません。¥n皆さんで話し合って決めてください。"
       };
     case "en-US":
     default:
