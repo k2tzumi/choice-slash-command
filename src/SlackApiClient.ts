@@ -577,8 +577,8 @@ class SlackApiClient {
   private preferredHttpMethod(endPoint: string): HttpMethod {
     switch (true) {
       case /(.)*conversations\.history$/.test(endPoint):
-      case /(.)*users.\.info$/.test(endPoint):
-      case /(.)*conversations.\.info$/.test(endPoint):
+      case /(.)*users\.info$/.test(endPoint):
+      case /(.)*conversations\.info$/.test(endPoint):
         return "get";
       default:
         return "post";
