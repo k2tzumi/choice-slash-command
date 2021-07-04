@@ -4,7 +4,6 @@ import { SlashCommandFunctionResponse } from "./SlashCommandHandler";
 import { DuplicateEventError } from "./CallbackEventHandler";
 import { OAuth2Handler } from "./OAuth2Handler";
 import { SlackApiClient } from "./SlackApiClient";
-import { JobBroker } from "apps-script-jobqueue";
 
 type TextOutput = GoogleAppsScript.Content.TextOutput;
 type HtmlOutput = GoogleAppsScript.HTML.HtmlOutput;

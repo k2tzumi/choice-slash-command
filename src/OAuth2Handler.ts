@@ -107,8 +107,7 @@ class OAuth2Handler {
     return null;
   }
 
-  public static readonly SCOPE =
-    "commands,users:read";
+  public static readonly SCOPE = "commands,users:read";
 
   private service: OAuth2Service;
 
