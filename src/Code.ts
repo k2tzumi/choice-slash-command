@@ -4,6 +4,9 @@ import { SlashCommandFunctionResponse } from "./SlashCommandHandler";
 import { DuplicateEventError } from "./CallbackEventHandler";
 import { OAuth2Handler } from "./OAuth2Handler";
 import { SlackApiClient } from "./SlackApiClient";
+// import * as JobBroker from "apps-script-jobqueue";
+// import JobBroker = require("apps-script-jobqueue");
+
 
 type TextOutput = GoogleAppsScript.Content.TextOutput;
 type HtmlOutput = GoogleAppsScript.HTML.HtmlOutput;
@@ -116,10 +119,6 @@ const executeSlashCommand = (
 };
 
 function getLocale(user_id: string): string {
-  JobBroker.enqueueAsyncJob(asyncLogging, {
-    token: handler.token
-  });
-
   const client = new SlackApiClient(handler.token);
   const user = client.usersInfo(user_id);
 
